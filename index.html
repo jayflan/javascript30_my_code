@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <span id="boom">A</span>
+      <span id="clap">B</span>
+      <span id="hihat">C</span>
+      <span id="kick">D</span>
+      <span id="openhat">E</span>
+      <span id="ride">F</span>
+      <span id="snare">G</span>
+      <span id="tink">H</span>
+      <span id="tom">I</span>
+    </div>
+  </body>
+    <script>
+      const spanSoundObj = {
+        boom: "./sounds/boom.wav",
+        clap: "./sounds/clap.wav",
+        hihat: "./sounds/hihat.wav",
+        kick: "./sounds/kick.wav",
+        openhat: "./sounds/openhat.wav",
+        ride: "./sounds/ride.wav", 
+        snare: "./sounds/snare.wav",
+        tink: "./sounds/tink.wav",
+        tom: "./sounds/tom.wav"
+      };
+      
+      const spanA = document.getElementById("boom");
+      const spanB = document.getElementById("clap");
+      const spanC = document.getElementById("hihat");
+      const spanD = document.getElementById("kick");
+      const spanE = document.getElementById("openhat");
+      const spanF = document.getElementById("ride");
+      const spanG = document.getElementById("snare");
+      const spanH = document.getElementById("tink");
+      const spanI = document.getElementById("tom");
+      const container = document.getElementsByClassName('container');
+      const span = container[0].getElementsByTagName('span');
+
+      window.addEventListener('load', () => {
+
+        
+        for(let i= 0; i < span.length; i++) {
+          const letterElem = span[i];   
+          const audio = new Audio(spanSoundObj[letterElem.id])
+          letterElem.onclick = () => {
+            audio.play();
+          }
+          letterElem.onmouseenter = () => {
+            audio.play();
+          }
+          const keyPress = document.addEventListener('keypress', (e) => {
+            if(e.key.toUpperCase() === letterElem.innerHTML) audio.play();
+            // return e.key
+          });
+           
+        }
+
+      });
+      
+      
+    </script>
+</html>
