@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand">
+          <div class="hour fill-long"></div>
+        </div>
+        <div class="hand min-hand"></div>
+        <div class="hand second-hand"></div>
+      </div>
+    </div>
+
+
+  <style>
+    html {
+      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+      display: flex;
+    }
+
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+    }
+
+    .hour-hand {
+      background: none;
+      display: flex;
+      justify-content: end;
+    }
+
+    .fill-long {
+      width: 75%;
+      height: 6px;
+      background-color: black;
+    }
+
+  </style>
+
+  <script>
+    
+    const convertMilHr = (timeInt) => {
+      if(timeInt > 12) {
+        return timeInt - 12
+      } else {
+        return timeInt
+      };
+    };
+    
+    const setTime = () => {
+      const now = new Date();
+      
+      const seconds = now.getSeconds();
+      const degreeSec = 360 / 60;
+      const secHand = document.getElementsByClassName("hand second-hand");
+      secHand[0].setAttribute(
+        'style', `
+          height: 3px; 
+          transform-origin: right; 
+          transform: rotate(${calcClockHandPosition(degreeSec, seconds)}deg); 
+          transition: all 0.05s;
+          transition-timing-function: ease;
+        `);
+
+      const minutes = now.getMinutes();
+      const degreeMin = 360 / 60;
+      const minHand = document.getElementsByClassName("hand min-hand");
+      minHand[0].setAttribute('style', `transform-origin: right; transform: rotate(${calcClockHandPosition(degreeMin, minutes)}deg);`);
+
+      const hours = now.getHours();
+      const degreeHrs = 360 / 12;
+      const hourHand = document.getElementsByClassName("hand hour-hand");
+      hourHand[0].setAttribute('style', `transform-origin: right; transform: rotate(${calcClockHandPosition(degreeHrs, hours)}deg)`);
+      console.log(hours, minutes, seconds)
+    };
+    
+    const calcClockHandPosition = (arcInt, timeInt) => {
+      const degreeStartPt = 90; // rotates hands from 9 to 12 before calc
+      return (timeInt * arcInt) + degreeStartPt;
+    };
+   
+    setInterval(setTime, 1000);
+
+  </script>
+</body>
+</html>
