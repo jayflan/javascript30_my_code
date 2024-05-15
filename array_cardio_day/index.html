@@ -39,6 +39,42 @@
       'Berne, Eric', 'Berra, Yogi', 'Berry, Wendell', 'Bevan, Aneurin', 'Ben-Gurion, David', 'Bevel, Ken', 'Biden, Joseph', 'Bennington, Chester', 'Bierce, Ambrose',
       'Billings, Josh', 'Birrell, Augustine', 'Blair, Tony', 'Beecher, Henry', 'Biondo, Frank'
     ];
+
+    const boulevards = [
+  "Boulevards of the Marshals",
+  "Boulevard Auguste-Blanqui",
+  "Boulevard Barbès",
+  "Boulevard Beaumarchais",
+  "Boulevard de l'Amiral-Bruix",
+  "Boulevard Mortier",
+  "Boulevard Poniatowski",
+  "Boulevard Soult",
+  "Boulevard des Capucines",
+  "Boulevard de la Chapelle",
+  "Boulevard de Clichy",
+  "Boulevard du Crime",
+  "Boulevard du Général-d'Armée-Jean-Simon",
+  "Boulevard Haussmann",
+  "Boulevard de l'Hôpital",
+  "Boulevard des Italiens",
+  "Boulevard Lefebvre",
+  "Boulevard de la Madeleine",
+  "Boulevard de Magenta",
+  "Boulevard Malesherbes",
+  "Boulevard Marguerite-de-Rochechouart",
+  "Boulevard Montmartre",
+  "Boulevard du Montparnasse",
+  "Boulevard Raspail",
+  "Boulevard Richard-Lenoir",
+  "Boulevard Saint-Germain",
+  "Boulevard Saint-Michel",
+  "Boulevard de Sébastopol",
+  "Boulevard de Strasbourg",
+  "Boulevard du Temple",
+  "Boulevard Voltaire",
+  "Boulevard de la Zone"
+];
+
     
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
@@ -90,6 +126,9 @@
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+    const filteredStrArray = (arr, str) => {
+      return arr.filter(elem => elem.includes(str));  
+    };
 
 
     // 7. sort Exercise
@@ -97,9 +136,9 @@
     const sortPeopleByLastName = (nameArr) => {
       //outer elem loop
       //inner letter loop
-      return [];
+      return nameArr.sort();
     };
-    console.log(sortPeopleByLastName(people));
+    console.log(sortPeopleByLastName(people)[0]);
 
 
     // 8. Reduce Exercise
@@ -107,7 +146,9 @@
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
     </script>
 
-    <script src="https://unpkg.com/chai/chai.js"></script>
+    <!-- <script src="https://unpkg.com/chai/chai.js"></script> -->
+    
+    <script src="./node_modules/chai/chai.js"></script> <!-- Using local due to unpkg.com error w/ chai -->>
     <script src="https://unpkg.com/mocha/mocha.js"></script>
 
     <script class="mocha-init">
@@ -168,11 +209,15 @@
           });
         });
         describe("Create a list of Boulevards in Paris that contain 'de' anywhere in the name", () => {
-          it("Test", () => {
+          it("Array of Paris Boulevards w/ 'de' contained in name === 9", () => {
+            chai.expect(filteredStrArray(boulevards,' de ').length).to.equal(9)
           });
         });
         describe("Sort the people alphabetically by last name", () => {
-          it("Test", () => {
+          it("First element of 'people' array should be Beck, Glenn & last element should be Blake, William", () => {
+            sortPeopleByLastName(people);
+            chai.expect(people[0]).to.equal('Beck, Glenn');
+            chai.expect(people[people.length-1] ).to.equal("Blake, William");
           });
         });
         describe("Sum up the instances of each of these", () => {
