@@ -134,12 +134,36 @@
     // 7. sort Exercise
     // Sort the people alphabetically by last name
     const sortPeopleByLastName = (nameArr) => {
+      //radix sort algo below with notations
+      
+      //Step 1: Find max. length of the strings in the target array
+      const maxLength = Math.max(...nameArr.map(name => name.length));
+      //setup index fetch
+      const getIndex = (str, digit) => {
+        return str.charCodeAt(digit) - 0; // 0 is the first of all 256 ASCII codes
+        //why all 256 ASCII codes? = our string names include spaces & off characters (e.g. '-')
+      };
       //outer elem loop
-      //inner letter loop
-      return nameArr.sort();
-    };
-    console.log(sortPeopleByLastName(people)[0]);
+      for(let digit = maxLength - 1; digit >= 0; digit--) {
+        //Step 2: Create array 'buckets' to represent possible char or digit value
+          //for strings, # of buckets will be equal to size of char set (e.g. 26 for lowercase, 52 for uppercase and lowercase
+            // or 256 for ASCII chars)
+        const buckets = Array.from({ length: 256 }, () => []);
+        //Step 3: Sort strings digit by digit starting from the least significant into buckets, then collect strings from buckets
+          //and update orig. array
+        //inner letter loop
+        //Repeat Step 3: repeat for next digit or char
+        for(const str of nameArr) {
+          const index = str.length > digit ? getIndex(str, digit) : 0;
+          buckets[index].push(str);
+        };
+         nameArr = [].concat(...buckets);
+      };
+      return nameArr;
 
+      //sort() prototype version below
+      // return nameArr.sort();
+    };
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
@@ -215,9 +239,9 @@
         });
         describe("Sort the people alphabetically by last name", () => {
           it("First element of 'people' array should be Beck, Glenn & last element should be Blake, William", () => {
-            sortPeopleByLastName(people);
-            chai.expect(people[0]).to.equal('Beck, Glenn');
-            chai.expect(people[people.length-1] ).to.equal("Blake, William");
+            // sortPeopleByLastName(people);
+            chai.expect(sortPeopleByLastName(people)[0]).to.equal('Beck, Glenn');
+            chai.expect(sortPeopleByLastName(people)[people.length-1]).to.equal("Blake, William");
           });
         });
         describe("Sum up the instances of each of these", () => {
