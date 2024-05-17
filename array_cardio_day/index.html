@@ -134,7 +134,7 @@
     // 7. sort Exercise
     // Sort the people alphabetically by last name
     const sortPeopleByLastName = (nameArr) => {
-      //radix sort algo below with notations
+      //radix sort algo below with notations for learning
       
       //Step 1: Find max. length of the strings in the target array
       const maxLength = Math.max(...nameArr.map(name => name.length));
@@ -168,6 +168,16 @@
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    //Hash Sum approach
+    const countArrInstance = (arr) => {
+      return arr.reduce((accum, currElem) => {
+        //check accum for string instance
+        accum[currElem] ? accum[currElem]++ : accum[currElem] = 1
+        return accum;
+      }, {})
+    };
+
     </script>
 
     <!-- <script src="https://unpkg.com/chai/chai.js"></script> -->
@@ -245,7 +255,16 @@
           });
         });
         describe("Sum up the instances of each of these", () => {
-          it("Test", () => {
+          it("Output should be an object", () => {
+            chai.expect(typeof countArrInstance(data)).to.equal('object');
+          });
+          it("Output of 'car' should total 5", () => {
+            const funcResult = countArrInstance(data);
+            chai.expect(funcResult.car).to.equal(5);
+          });
+          it("Output of 'truck' should total 3", () => {
+            const funcResult = countArrInstance(data);
+            chai.expect(funcResult.truck).to.equal(3);
           });
         });
       });      
