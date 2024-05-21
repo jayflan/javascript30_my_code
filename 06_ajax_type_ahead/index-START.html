@@ -18,6 +18,23 @@
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
+//async endpoint function
+const citiesArr = [];
+const fetchEndpoint = async() => {
+  try{
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    return data;
+  } catch(error) {
+    console.log(error('Error:', error))
+  };
+};
+
+fetchEndpoint().then(data => citiesArr.push(...data));
+
+
+
+
 </script>
 </body>
 </html>
