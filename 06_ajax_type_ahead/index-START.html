@@ -1,40 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Type Ahead 👀</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Type Ahead 👀</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
 
-  <form class="search-form">
-    <input type="text" class="search" placeholder="City or State">
-    <ul class="suggestions">
-      <li>Filter for a city</li>
-      <li>or a state</li>
-    </ul>
-  </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    <form class="search-form">
+      <input type="text" class="search" placeholder="City or State">
+      <ul class="suggestions">
+        <li>Filter for a city</li>
+        <li>or a state</li>
+      </ul>
+    </form>
+    
+  <script>
+  const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
-//async endpoint function
-const citiesArr = [];
-const fetchEndpoint = async() => {
-  try{
-    const response = await fetch(endpoint);
-    const data = await response.json();
-    return data;
-  } catch(error) {
-    console.log(error('Error:', error))
+  const citiesArr = [];
+
+  const fetchEndpoint = async(strUrl) => {
+    try{
+      const response = await fetch(strUrl);
+      if(!response.ok) throw new Error(`HTTP error ${response.status}`);
+      const data = await response.json();
+      return data;
+    } catch(error) {
+      console.log(error('Error:', error))
+    };
   };
-};
 
-fetchEndpoint().then(data => citiesArr.push(...data));
+  async function setCitiesArr() {
+    try {
+      const data = await fetchEndpoint(endpoint);
+      citiesArr.push(...data);
+    } catch(error) {
+      console.log('Error:', error);
+    };
+  };
 
+  //set citiesArr data
+  setCitiesArr();
+  
+  // original fetch example using .then
+  // fetchEndpoint(endpoint)
+  //   .then(data => citiesArr.push(...data))
+  //   .catch(error => console.error('Error:', error));
 
+  const findMatches = (strToMatch, citiesArr) => {
+    return citiesArr.filter(place => {
+      const regex = new RegExp(strToMatch, 'gi');
+      return place.city.match(regex) || place.state.match(regex);
+    });
+  };
 
-
-</script>
-</body>
+  </script>
+  </body>
 </html>
