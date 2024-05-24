@@ -31,20 +31,52 @@
 
       // Some and Every Checks
       // Array.prototype.some() // is at least one person 19 or older?
-      const checkAgeLimit = (objectArr, targetAge) => {
+      const checkSomeAge = (objectArr, targetAge) => {
         const currYear = new Date();
         const yearNumber = currYear.getFullYear();
         return objectArr.some(person => (yearNumber - person.year) > targetAge);
       };
       // Array.prototype.every() // is everyone 19 or older?
+      const checkEveryAge = (objectArr, targetAge) => {
+        // const currYear = new Date();
+        // const yearNumber = currYear.getFullYear();
+        //better current year code:
+        const currYear = (new Date()).getFullYear();
+        return objectArr.every(person => (currYear - person.year) > targetAge);
+      };
 
       // Array.prototype.find()
       // Find is like filter, but instead returns just the one you are looking for
       // find the comment with the ID of 823423
+      const isId = (commentArr, targetId) => {
+        return commentArr.find(comment => comment.id === targetId);
+      };
 
       // Array.prototype.findIndex()
       // Find the comment with this ID
       // delete the comment with the ID of 823423
+      // const deleteComment = (commentArr, targetId) => {
+      //   const commentIndex = commentArr.findIndex(comment => comment.id === targetId)
+      //   return commentArr.splice(commentIndex, 1);
+      // };
+
+      //how to index, delete, and create a NEW array (not mutate the original);
+      const index = (commentArr, targetId) => {
+        return commentArr.findIndex(comment => comment.id === targetId);
+      };
+
+      const deleteComment = (commentArr, targetId) => {
+        const targetIdx = index(commentArr, targetId);
+        return [
+          ...commentArr.slice(0, targetIdx),
+          ...commentArr.slice(targetIdx + 1)
+        ];
+      };
+      
+      const newComments = deleteComment(comments, 823423);
+
+
+
     </script>
 
     <!-- <script src="https://unpkg.com/chai/chai.js"></script> -->
@@ -60,13 +92,34 @@
       describe("Array Cardio Day 2 Tests", () => {
         describe("Some Check: At least 1 person 19 or older?", () => {
           it("Output should be True/False", () => {
-            chai.expect(checkAgeLimit(people, 19)).to.be.true && chai.expect(checkAgeLimit(people, 100)).to.be.false;
+            chai.expect(checkSomeAge(people, 19)).to.be.true && chai.expect(checkSomeAge(people, 100)).to.be.false;
           });
           it("At least 1 person 19 or older?", () => {
-            chai.expect(checkAgeLimit(people, 19)).to.be.true;
+            chai.expect(checkSomeAge(people, 19)).to.be.true;
           });
-        })
+        });
+        describe("Are all persons aged 19 or older?", () => {
+          it("Output should be boolean & true", () => {
+            chai.expect(checkEveryAge(people, 19)).to.be.a('boolean');
+            chai.expect(checkEveryAge(people, 19)).to.be.false;
+          });
+        });
+        describe("Can find comment Id # 823423", () => {
+          it("Comment Id# 823423 can be found", () => {
+            chai.expect(isId(comments, 823423)).to.not.be.a('undefined');
+          });
+        });
+        describe("Delete from comments array", () => {
+          it("Find comment index #823423 from comments array in memory", () => {
+            chai.expect(deleteComment(comments, 823423)).to.not.be.a('false')
+          });
+          it("Comment deleted from new-comments array in memory (comments.length === 4)", () => {
+            const newComments = deleteComment(comments, 823423);
+            chai.expect(newComments.length).to.equal(4);
+          });
+        });
       });
+      
     </script>
 
     <script class="mocha-exec">
