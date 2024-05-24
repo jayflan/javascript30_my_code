@@ -51,10 +51,61 @@
 
   const findMatches = (strToMatch, citiesArr) => {
     return citiesArr.filter(place => {
+      //figure out if city or state matches what's searched
       const regex = new RegExp(strToMatch, 'gi');
       return place.city.match(regex) || place.state.match(regex);
     });
   };
+
+  const formatPopulationCommas = (strNum) => {
+    let strArr = strNum.split('');
+    let counter = 0;
+    for(let i = strArr.length - 1; i >= 0; i-- ) {
+      console.log(counter)
+      counter === 3 ? strArr.splice(i + 1, 0, ",") : "";
+      counter === 3 ? counter = 1 : counter++
+    };
+    return strArr.join('');
+  };
+
+  //the regex way to formatNumberCommas:
+  //  const formatPopulationCommas = (strNum) => {
+  //    return strNum.replace(/\B(?=(\d{3})+(?!\d))/g, ",");  
+  //   };
+  
+
+  //visual output of citiesArr
+  const updateList = (strText) => {
+    const parentUL = document.querySelector('.suggestions');
+    const searchArr = findMatches(strText, citiesArr);
+    const htmlLiArr = searchArr.map((location) => {
+      const regex = new RegExp(strText, 'gi');
+      //highlight letters searched in city name
+      const cityName = location.city.replace(regex, `<span class="hl">${strText}</span>`)
+      const stateName = location.state.replace(regex, `<span class="hl">${strText}</span>`)
+      const populationFormatted = formatPopulationCommas(location.population);
+      return `
+        <li>
+          <span class="name">${cityName}, ${stateName}</span> 
+          <span class="population">pop: ${populationFormatted}</span>
+        </li>
+      `;
+    }).join('');
+
+    parentUL.innerHTML = htmlLiArr;
+  };
+
+  //input onchange
+  const inputElement = document.querySelector('.search');
+  
+  const handleInputChange = () => {
+    const inputText = inputElement.value;
+    updateList(inputText);
+  };
+  
+  inputElement.addEventListener('change', handleInputChange);
+  inputElement.addEventListener('keyup', handleInputChange);
+  
 
   </script>
   </body>
