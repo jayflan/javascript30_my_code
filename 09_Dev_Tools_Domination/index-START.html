@@ -1,47 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Console Tricks!</title>
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Console Tricks!</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <p onClick="makeGreen()">×BREAK×DOWN×</p>
 
-  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+    <script>
+      const dogs = [
+        { name: "Snickers", age: 2 },
+        { name: "hugo", age: 8 },
+      ];
 
-  <script>
-    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+      function makeGreen() {
+        const p = document.querySelector("p");
+        p.style.color = "#BADA55";
+        p.style.fontSize = "50px";
+      }
 
-    function makeGreen() {
+      // Regular
+      console.log('hello world');
+
+      // Interpolated <-- not used much, now use template literals
+      console.log('Hello I am a %s string!', '😀'); // emoji in place of the %s
+
+      // Styled
+      console.log('%c I am some great text', 'font-size:50px; background:red; text-shadow: 10px 10px 0 blue');
+
+      // warning!
+      console.warn('OH NOOO');
+
+      // Error :|
+      console.error('Whoops');
+
+      // Info
+      console.info('Average human head weighs 8 pounds.')
+
+      // Testing
+      console.assert(1 === 2, 'Wrong!');
       const p = document.querySelector('p');
-      p.style.color = '#BADA55';
-      p.style.fontSize = '50px';
-    }
+      console.assert(p.classList.contains('ouch'), 'That is wrong, p classlist does not include a string with word ouch');
+      
+      // clearing
+      console.clear(); //can be used at bottom of JS files to clean up if console logs expected in code.
 
-    // Regular
+      // Viewing DOM Elements
+      console.log(p);
+      console.dir(p); //provides all methods for particular element.
 
-    // Interpolated
+      // Grouping together
+      dogs.forEach(dog => {
+        // console.group(`${dog.name}`);
+        console.groupCollapsed(`${dog.name}`);
+        console.log(`This is a ${dog.name}`);
+        console.log(`${dog.name} is ${dog.age} years old.`);
+        console.log(`${dog.name} is ${dog.age * 7} dog years old.`);
+        console.groupEnd(`${dog.name}`);
+      });
 
-    // Styled
+      // counting
+      console.count('Jay');
+      console.count('Jay');
+      console.count('George');
+      console.count('Jay');
+      console.count('Jay');
+      console.count('George');
+      console.count('Jay');
+      console.count('George');
+      console.count('George');
+      console.count('George');
 
-    // warning!
+      // timing
+      console.time('fetching data');
+      fetch('https://api.github.com/users/jayflan')
+        .then(data => data.json())
+        .then(data => {
+          console.timeEnd('fetching data');
+          console.log(data);
+        });
 
-    // Error :|
+        //table
+        console.table(dogs);
 
-    // Info
-
-    // Testing
-
-    // clearing
-
-    // Viewing DOM Elements
-
-    // Grouping together
-
-    // counting
-
-    // timing
-
-  </script>
-</body>
+    </script>
+  </body>
 </html>
