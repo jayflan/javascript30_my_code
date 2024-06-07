@@ -1,77 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-  const canvas = document.querySelector('#draw');
-  const ctx = canvas.getContext("2d");
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.querySelector("#draw");
+      const ctx = canvas.getContext("2d");
 
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-  ctx.lineJoin = 'round';
-  ctx.strokeStyle = 'hsl(315 63 54)';
-  // ctx.strokeStyle = '#BADA55';
-  ctx.lineCap = 'round';
-  ctx.lineWidth = 50;
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "hsl(315 63 54)";
+      // ctx.strokeStyle = '#BADA55';
+      ctx.lineCap = "round";
+      ctx.lineWidth = 1;
 
-  let lastX = 0, lastY = 0, isDrawing = false;
+      let lastX = 0,
+        lastY = 0,
+        isDrawing = false,
+        hue = 0,
+        direction = true;
 
-  const randomStrokeHsl = (strArr) => {
-    const randomHsl = strArr[Math.floor(Math.random() * strArr.length)];
-    console.log(randomHsl);
-    ctx.strokeStyle = `hsl(${randomHsl[0]} ${randomHsl[1]} ${randomHsl[2]})`;
-  };
-  
-  const draw = (e) => {
-    const arrStrokeHsl = [
-      [315, 63, 54],
-      [30, 86, 50],
-      [62, 57, 50],
-      [32, 18,  50],
-      [162, 56, 50],
-      [250, 80, 50],
-      [347, 37, 50]
-    ];
-    if(!isDrawing) return;
-    console.log(e);
-    console.log(ctx)
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY); //start from
-    ctx.lineTo(e.offsetX, e.offsetY); // go to
+      // const randomHueNum = () => {
+      //   return Math.floor(Math.random() * 360);
+      // };
 
-    randomStrokeHsl(arrStrokeHsl)
-    ctx.stroke();
+      const draw = (e) => {
+        
+        if (!isDrawing) return;
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY); //start from
+        ctx.lineTo(e.offsetX, e.offsetY); // go to
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+        ctx.stroke();
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+        hue < 360 ? hue++ : hue = 0; //smooth hue line-color via increment & cap the hue number
+        // if(ctx.lineWidth <= 0.5 || ctx.lineWidth >= 50) direction = !direction;
+        ctx.lineWidth <= 0.5 || ctx.lineWidth >= 50 ? direction = !direction : '';
+        direction ? ctx.lineWidth = ctx.lineWidth + 0.5 : ctx.lineWidth = ctx.lineWidth - 0.5;
+      };
 
-    [lastX, lastY] = [e.offsetX, e.offsetY]; 
-  };
-  
-  canvas.addEventListener('mousemove', draw); //<--make function run
-  canvas.addEventListener('mousedown', (e) => { 
-    isDrawing = true;
-    [lastX, lastY] = [e.offsetX, e.offsetY];
-  }); //<--make function draw
-  canvas.addEventListener('mouseup', () => { isDrawing = false });
-  canvas.addEventListener('mouseout', () => { isDrawing = false });
+      canvas.addEventListener("mousemove", draw); //<--make function run
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+      }); //<--make function draw
+      canvas.addEventListener("mouseup", () => {
+        isDrawing = false;
+        ctx.lineWidth = 5;
+      });
+      canvas.addEventListener("mouseout", () => {
+        isDrawing = false;
+      });
+    </script>
 
-
-  
-</script>
-
-<style>
-  html, body {
-    margin: 0;
-  }
-  #draw {
-    border-style: solid;
-    border: 1px;
-    border-color: black;
-  }
-</style>
-
-</body>
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      #draw {
+        border-style: solid;
+        border: 1px;
+        border-color: black;
+      }
+    </style>
+  </body>
 </html>
