@@ -55,7 +55,17 @@ body {
 }
 
 .player__button:focus {
+  /* background-color: #ffc600; */
+  border-style: solid;
+  border-width: 1px;
   border-color: #ffc600;
+}
+
+.player__button:hover {
+  background-color: #ffc600;
+  /* border-style: solid; */
+  /* border-width: 1px; */
+  /* border-color: #ffc600; */
 }
 
 .player__slider {
@@ -101,7 +111,7 @@ body {
   width: 50%;
   background: #ffc600;
   flex: 0;
-  flex-basis: 50%;
+  flex-basis: 0%;
 }
 
 /* unholy css to style input type="range" */
