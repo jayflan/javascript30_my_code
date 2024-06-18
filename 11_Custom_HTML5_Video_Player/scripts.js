@@ -38,7 +38,8 @@ progressBar.addEventListener('mousemove', (event) => {
     const xpos = event.offsetX;
     const barWidth = progressBar.offsetWidth;
     handleProgressBar(xpos, barWidth, video);
-})
+});
+
 //click & drag volume or playbackRate sliders
 ranges.forEach(range => {
     handleSlider(range, video); //set initial range tool-title values
