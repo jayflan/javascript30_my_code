@@ -44,6 +44,47 @@
   </div>
 
   <script>
+
+    // select all images (to iterate through them)
+    const slidingImages = document.querySelectorAll('.slide-in');
+    
+    // detect scroll position & animate images using class .active add/update
+    const slideImages = () => {
+      //get positon and check if within window/onscreen
+      // const scrollPosition = window.pageYOffset || document.documentElement.scrollTop
+      // const windowHeight = window.innerHeight;
+      
+      slidingImages.forEach(image => {
+        // const imagePosition = image.getBoundingClientRect().top;
+        const slideInAt = (window.scrollY + window.innerHeight) - image.height / 2
+        const imageBottom = image.offsetTop + image.height;
+        const isHalfShown = slideInAt > image.offsetTop;
+        const isNotScrolledPast = window.scrollY < imageBottom;
+        
+        if(isHalfShown && isNotScrolledPast) {
+          image.classList.add('active');
+        } else {
+          image.classList.remove('active');
+        };       
+        
+        // first pass, uses inactive variables
+        /*
+        if(imagePosition < windowHeight) {
+          //image is visible
+          image.classList.add('active');
+        } else {
+          // image is not visible, reset animation
+          image.classList.remove('active');
+        };
+        */
+
+      });
+    };
+
+    
+    // debounce function will only allow slide function to run so many times while scrolling.
+      // Not for EVERY scroll listened event.  
+      // Helps BOTH calibrate effect & performance
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -57,7 +98,10 @@
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
       };
-    }
+    };
+    
+    // create scroll event listener
+    window.addEventListener('scroll', debounce(slideImages, 10));
 
   </script>
 
