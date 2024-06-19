@@ -7,6 +7,19 @@
     <link rel="icon" href="https://fav.farm/🔥" />
   </head>
   <body>
-    <script></script>
+    <script>
+
+      const pressed = [];
+      const secretCode = cornami.pattern;
+
+      window.addEventListener('keydown', (e) => {
+        pressed.push(e.keyCode);
+        //stop pushing to array at max of secret string length
+        // wes version: pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length);
+        if(pressed.join('').length > secretCode.length) pressed.shift();
+        cornami.input = pressed.join('');
+      });
+
+    </script>
   </body>
 </html>

@@ -346,7 +346,7 @@ var cornami = {
   pattern: "38384040373937396665",
   clear: setTimeout("cornami.clear_input()", 5000),
   load: function () {
-    window.document.onkeydown = function (event) {
+    window.document.onkeyup = function (event) {
       if (cornami.input == cornami.pattern) {
         cornify_add();
         clearTimeout(cornami.clear);
