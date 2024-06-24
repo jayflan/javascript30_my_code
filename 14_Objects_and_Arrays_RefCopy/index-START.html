@@ -8,16 +8,22 @@
 <body>
 
   <script>
-    // start with strings, numbers and booleans
+    // start with strings, numbers and booleans 
 
     // Let's say we have an array
-    const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
+    // const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
+    const players = ['Wes', 'Sarah', 'Ryan', 'Poppy', {name: 'mimi', age: 90}];
 
     // and we want to make a copy of it.
 
     // You might think we can just do something like this:
-
+    
     // however what happens when we update that array?
+      
+      /*
+        let playersCopy = players;
+        playersCopy.push('JohnJohn');
+      */
 
     // now here is the problem!
 
@@ -28,26 +34,122 @@
     // So, how do we fix this? We take a copy instead!
 
     // one way
+      
+      // beginner loop way
+    let begLoopArrCopy = [];
+    let playersJoinCopy = players.join(",")
+    let str = '';
+    for(let i = 0; i <= playersJoinCopy.length; i++) {
+      if(i === playersJoinCopy.length) begLoopArrCopy.push(str);
+      if(playersJoinCopy[i] !== ',') {
+        str += playersJoinCopy[i];
+      } else {
+        begLoopArrCopy.push(str);
+        str = '';
+      };
+    };
+      //update new copy
+      begLoopArrCopy.push('JohnJohn');
+
+      //reduce arr method way
+    let reducedCopy = players.reduce((accum, elem) => {
+      accum.push(elem);
+      return accum;
+    }, []);
+    reducedCopy.push('JohnJohn');
 
     // or create a new array and concat the old one in
+    let concatArrCopy = [].concat(players);
+    concatArrCopy.push('JohnJohn');
 
     // or use the new ES6 Spread
+    let spreadArrCopy = [...players];
+    spreadArrCopy.push('JohnJohn');
 
     // now when we update it, the original one isn't changed
+
+    //DEEP array copy
+    const deepArrCopy = (arr) => {
+      if(!Array.isArray(arr)) throw new Error('The arg must be an array.');
+
+      const copy = [];
+
+      arr.forEach(element => {
+        if(Array.isArray(element)) {
+          copy.push(deepArrCopy(element));
+        } else if(typeof element === 'object' && element !== null) {
+          copy.push(deepObjCopy(element));
+        } else {
+          copy.push(element);
+        }
+      });
+
+      return copy;
+    };
 
     // The same thing goes for objects, let's say we have a person object
 
     // with Objects
     const person = {
       name: 'Wes Bos',
-      age: 80
+      age: 80,
+      total: ['wes', 'bos', 80]
     };
+
+    // const person = {
+    //   name: 'Wes Bos',
+    //   age: 80
+    // };
 
     // and think we make a copy:
 
+      /*
+        //shallow copy, doesn't work:
+        let personCopy = person;
+        personCopy.age = 100;
+      */
+
+      /*
+        //this copy works, but still shallow copy.
+        let personCopy = {};
+        personCopy.name = person.name;
+        personCopy.age = person.age;
+        personCopy.age = 100;
+      */
+
     // how do we take a copy instead?
 
+
     // We will hopefully soon see the object ...spread
+
+    /*
+      //spread method for objects, this works but.......shallow copy.
+      let spreadObjCopy = {...person};
+      spreadObjCopy.age = 100;
+    */
+
+    // how to DEEPcopy and object
+      //recursive function version
+      const deepObjCopy = (obj) => {
+        if(typeof obj !== 'object') throw new Error('The argument must be an object');
+        const copy = {};
+          
+        for(const key in obj) {
+          if(Array.isArray(obj[key])) {
+            copy[key] = deepArrCopy(obj[key]);
+          } else if(typeof obj[key] === 'object' && obj[key] !== null) {
+            copy[key] = deepObjCopy(obj[key]);
+          } else {
+            copy[key] = obj[key];
+          };
+        };
+        return copy;
+      };
+
+      let deepPersonCopy = deepObjCopy(person);
+      deepPersonCopy.age = 100;
+
+
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
 
