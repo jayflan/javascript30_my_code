@@ -29,7 +29,63 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const items = !localStorage.length ? [] : JSON.parse(localStorage.getItem('items'));
+
+  
+  const addItem = (e) => {
+    event.preventDefault();
+    const target = e.target;
+    const text = (target.querySelector('[name=item]')).value;
+    const item = {
+      text: text,
+      done: false
+    };
+    target.reset();
+    items.push(item);
+    localStorage.setItem('items', JSON.stringify(items)); 
+    populateList(items, itemsList);
+    
+  }; 
+  
+  addItems.addEventListener('submit', addItem);
+
+  
+  // if(!items.length) {  <--------moved this into a function instead for resiliency!!!!!!
+  //   itemsList.innerHTML = `<li>Please add an item...</li>`
+  // } else {
+    //   itemsList.innerHTML = `${
+      
+    //     items.map((item) => {
+      //       return `<li>${item.text}</li>`
+      //     }).join('')
+      //   }`
+      
+      // };
+      
+      const populateList = (items = [], itemsList) => {
+        if(!items.length) {  
+          itemsList.innerHTML = `<li>Please add an item...</li>`
+        } else {
+          itemsList.innerHTML = `${
+            
+          items.map((item, idx) => {
+            return `
+            <li>
+              <input type="checkbox" data-index=${idx} id="item${idx}" ${item.done ? 'checked' : ''}/>
+              <label for="item${idx}">${item.text}</label>
+            </li>
+            `;
+          }).join('')
+          }`
+          
+        };
+      };
+      
+      const isItemChecked = (items) => {
+        console.log(e)
+      };
+      
+      populateList(items, itemsList);
 
 </script>
 
