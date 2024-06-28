@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Shadow</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+  <div class="hero">
+    <h1 contenteditable>🔥WOAH!</h1>
+  </div>
+
+  <style>
+  html {
+    color: black;
+    font-family: sans-serif;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+  }
+
+  h1 {
+    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+    font-size: 100px;
+    /* transition: text-shadow 0.3s ease-in-out; */
+  }
+
+  /* h1:hover {
+    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+  } */
+
+  /* h1.animated-text:hover {
+    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+  } */
+  </style>
+
+<script>
+  const h1Element = document.querySelector('h1');
+  
+  // const handleMouseOver = (e) => {
+  //   // console.log(h1Element.style.textShadow);
+  //   h1Element.style.textShadow = `10px 10px 0 rgba(0,0,0,1)`;
+  // };
+
+  // const handleMouseOut = (e) => {
+  //   h1Element.style.textShadow = '';
+  // };
+
+  // h1Element.addEventListener('mouseover', handleMouseOver);
+  // h1Element.addEventListener('mouseout', handleMouseOut);
+
+  //course example to 'move' the shadow using a window-high 'hero' element wrapped around the h1
+  const hero = document.querySelector('.hero');
+  
+  //not usin arrow-function to be able to eval. 'this' to the e.target change of the mouseover
+  function handleShadow(e) {
+    const { offsetWidth: width, offsetHeight: height} = hero;
+    let { offsetX: x, offsetY: y } = e;
+    const walk = 100; //100px
+    const text = e.text;
+
+    //since mouseover of children elements will mess up x/y coordinates, normalize/eval when this happens:
+    if(this !== e.target) {
+      x = x + e.target.offsetLeft; //<-- add back or resync x/y coords back to the hero, by axis needed(h1 in this case);
+      y = y + e.target.offsetTop;
+    };
+
+    //how far should the shadow animation 'WALK' over from text * convert from window coords to pixel range? (logic here)
+    const xWalk = Math.round((x / width * walk) - (walk / 2)); //<-- goal figure is to give range of -50 to 50 px on x/y axes.
+    const yWalk = Math.round((y / height * walk) - (walk / 2)); // round to simplify transition from pixel to pixel.
+
+    //adjust text-shadow props (Xpx, Ypx, Blur, Color) with walk values:
+    h1Element.style.textShadow = `${xWalk}px ${yWalk}px 0 red`;
+    
+  };
+
+  hero.addEventListener('mousemove', handleShadow);
+
+
+</script>
+</body>
+</html>
