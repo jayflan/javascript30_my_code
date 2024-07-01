@@ -49,6 +49,24 @@
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
+//display list
+const loadListItems = (listArr = [], listHtml) => {
+  if(!listHtml || !listArr)  {
+    listHtml.innerHtml = "Please wait....";
+    const error = new Error('error loading list.')
+    return;
+  } else {
+    listHtml.innerHtml = `${
+      listArr.map((item) => {
+        return `<li>${item}</li>`;
+      }).join('')
+    }`;
+  }; 
+};
+
+const listHtml = document.getElementById("bands")
+
+loadListItems(bands, listHtml);
 
 </script>
 
