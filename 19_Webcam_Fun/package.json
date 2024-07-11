@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "scripts.js",
   "scripts": {
-    "start": "browser-sync start --server --files \"*.css, *.html, *.js\"",
-    "start-dev": "start nodemon --watch"
+    "start": "node scripts.js",
+    "start-dev": "browser-sync --server --files \"*.css, *.html, *.js\""
   },
   "author": "",
   "license": "ISC",
