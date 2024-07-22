@@ -27,4 +27,12 @@ const startWebcam = async() => {
   };
 };
 
+const takePhoto = () => {
+  const data = canvas.toDataURL('image/jpg');
+  const link = document.createElement("a");
+  link.href = data;
+  link.setAttribute('download', 'snapshot');
+  link.click();
+};
+
 startWebcam();
